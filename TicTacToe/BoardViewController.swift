@@ -13,6 +13,28 @@ protocol BoardViewControllerDelegate: class {
 }
 
 class BoardViewController: UIViewController {
+        
+    // MARK: - Properties
+    
+    var board: GameBoard? {
+        didSet {
+            updateButtons()
+        }
+    }
+    
+    weak var delegate: BoardViewControllerDelegate?
+    
+    // MARK: - Outlets
+
+    @IBOutlet var buttons: [UIButton]!
+    
+    // MARK: - Actions
+
+    @IBAction func mark(_ sender: UIButton) {
+        delegate?.boardViewController(self, markWasMadeAt: coordinate(for: sender))
+    }
+    
+    // MARK: - Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,10 +45,6 @@ class BoardViewController: UIViewController {
         }
         
         updateButtons()
-    }
-    
-    @IBAction func mark(_ sender: UIButton) {
-        delegate?.boardViewController(self, markWasMadeAt: coordinate(for: sender))
     }
     
     // MARK: - Private
@@ -58,16 +76,4 @@ class BoardViewController: UIViewController {
         let y = tag / 3
         return (x, y)
     }
-    
-    // MARK: - Properties
-    
-    var board: GameBoard? {
-        didSet {
-            updateButtons()
-        }
-    }
-    
-    weak var delegate: BoardViewControllerDelegate?
-    
-    @IBOutlet var buttons: [UIButton]!
 }

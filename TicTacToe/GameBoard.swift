@@ -16,6 +16,8 @@ typealias Coordinate = (x: Int, y: Int)
 
 struct GameBoard {
     
+    // MARK: - Enums and Subscripts
+    
     enum Mark: Equatable {
         case x
         case o
@@ -42,12 +44,7 @@ struct GameBoard {
         }
     }
     
-    mutating func place(mark: Mark, on square: Coordinate) throws {
-        if self[square] != nil {
-            throw GameBoardError.invalidSquare
-        }
-        squares[arrayIndex(for: square)] = .filled(mark)
-    }
+    // MARK: - Properties
     
     var isFull: Bool {
         for square in squares {
@@ -58,9 +55,18 @@ struct GameBoard {
         return true
     }
     
+     private var squares = Array(repeating: Square.empty, count: 9)
+    
+    // MARK: - Methods
+    
+    mutating func place(mark: Mark, on square: Coordinate) throws {
+        if self[square] != nil {
+            throw GameBoardError.invalidSquare
+        }
+        squares[arrayIndex(for: square)] = .filled(mark)
+    }
+        
     private func arrayIndex(for square: Coordinate) -> Int {
         return square.y * 3 + square.x
     }
-    
-    private var squares = Array(repeating: Square.empty, count: 9)
 }
